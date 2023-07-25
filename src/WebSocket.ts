@@ -10,11 +10,14 @@ const server = new WebSocket.Server({ port: port });
 
 const connections: { [key: string]: WebSocket } = {};
 
+const playerPositions: { [key: string]: { x: number; y: number } } = {};
+
 server.on("connection", (connection) => {
   const connectionId = uuidv4();
 
   console.log(`Received a new connection (ID: ` + connectionId + `)`);
   connections[connectionId] = connection;
+  playerPositions[connectionId] = { x: 0, y: 0 };
   console.log(`Total connections open: ` + Object.keys(connections).length);
 
   connection.on("close", async () => {
@@ -25,7 +28,25 @@ server.on("connection", (connection) => {
 
   connection.on("message", (message) => {
     console.log(`Received message from (ID: ` + connectionId + `): ` + message);
+    const positions = JSON.parse(message.toString()) as {
+      x: number;
+      y: number;
+    };
+    playerPositions[connectionId] = positions;
   });
 });
 
 console.log(`Server running on port ${port}`);
+
+async function serve() {
+  const running = true;
+  while (running) {
+    const positions = JSON.stringify(playerPositions);
+    Object.keys(connections).forEach((connectionId) => {
+      connections[connectionId].send(positions);
+    });
+    await new Promise((resolve) => setTimeout(resolve, 1000 / 60));
+  }
+}
+
+serve();
