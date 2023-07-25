@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  openaigpt-nodejs:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    restart: always
+    volumes:
+      - .:/app
+    ports:
+      - ${WEBSOCKET_PORT}:${WEBSOCKET_PORT}
+    networks:
+      - xball-local
+    command: nodemon src/WebSocket.ts
+
+networks:
+  xball-local:
+    driver: bridge
