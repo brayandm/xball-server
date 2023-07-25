@@ -41,7 +41,10 @@ console.log(`Server running on port ${port}`);
 async function serve() {
   const running = true;
   while (running) {
-    const positions = JSON.stringify(playerPositions);
+    const playerPositionsArray = Object.keys(playerPositions).map((key) => {
+      return { id: key, ...playerPositions[key] };
+    });
+    const positions = JSON.stringify(playerPositionsArray);
     Object.keys(connections).forEach((connectionId) => {
       connections[connectionId].send(positions);
     });
