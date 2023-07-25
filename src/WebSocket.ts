@@ -42,10 +42,11 @@ console.log(`Server running on port ${port}`);
 async function serve() {
   const running = true;
   while (running) {
-    const playerPositionsArray = Object.keys(playerPositions).map((key) => {
-      return { id: key, ...playerPositions[key] };
-    });
     Object.keys(connections).forEach((connectionId) => {
+      const playerPositionsArray = Object.keys(playerPositions).map((key) => {
+        return { id: key, ...playerPositions[key], isMe: key === connectionId };
+      });
+
       connections[connectionId].send(JSON.stringify(playerPositionsArray));
     });
     await new Promise((resolve) => setTimeout(resolve, 1000 / 60));
