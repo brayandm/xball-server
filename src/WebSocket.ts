@@ -44,9 +44,12 @@ async function serve() {
     const playerPositionsArray = Object.keys(playerPositions).map((key) => {
       return { id: key, ...playerPositions[key] };
     });
-    const positions = JSON.stringify(playerPositionsArray);
     Object.keys(connections).forEach((connectionId) => {
-      connections[connectionId].send(positions);
+      const newPlayerPositionsArray = playerPositionsArray.filter(
+        (playerPosition) => playerPosition.id !== connectionId
+      );
+
+      connections[connectionId].send(JSON.stringify(newPlayerPositionsArray));
     });
     await new Promise((resolve) => setTimeout(resolve, 1000 / 60));
   }
