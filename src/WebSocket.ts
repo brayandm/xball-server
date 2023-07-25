@@ -23,6 +23,7 @@ server.on("connection", (connection) => {
   connection.on("close", async () => {
     console.log(`Connection closed (ID: ` + connectionId + `)`);
     delete connections[connectionId];
+    delete playerPositions[connectionId];
     console.log(`Total connections open: ` + Object.keys(connections).length);
   });
 
