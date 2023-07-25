@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
 
-const port = Number(process.env.WEBSOCKET_ENV || "3001");
+const port = Number(process.env.WEBSOCKET_PORT || "3001");
 
 const server = new WebSocket.Server({ port: port });
 
