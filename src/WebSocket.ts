@@ -6,13 +6,13 @@ dotenv.config();
 
 const port = Number(process.env.WEBSOCKET_PORT || "3001");
 
-const server = new WebSocket.Server({ port: port });
+const ws = new WebSocket.Server({ port: port });
 
 const connections: { [key: string]: WebSocket } = {};
 
 const playerPositions: { [key: string]: { x: number; y: number } } = {};
 
-server.on("connection", (connection) => {
+ws.on("connection", (connection) => {
   const connectionId = uuidv4();
 
   console.log(`Received a new connection (ID: ` + connectionId + `)`);
