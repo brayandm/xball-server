@@ -56,6 +56,24 @@ class EventManager {
     }
   }
 
+  private sendCurrentPlayersToNewPlayer(connectionId: string) {
+    const players = this.gameManager.getPlayers();
+
+    players.forEach((player) => {
+      if (player.getId() === connectionId) return;
+
+      const message = JSON.stringify({
+        type: "createPlayer",
+        isMe: false,
+        id: player.getId(),
+        x: player.getX(),
+        y: player.getY(),
+      });
+
+      this.webSocketManager.sendMessage(connectionId, message);
+    });
+  }
+
   private sendRemovePlayerEventToAllPlayers(connectionId: string) {
     const players = this.gameManager.getPlayers();
 
@@ -86,6 +104,8 @@ class EventManager {
       this.gameManager.createPlayer(connectionId);
 
       this.sendNewPlayerEventToAllPlayers(connectionId);
+
+      this.sendCurrentPlayersToNewPlayer(connectionId);
     };
 
     const onCloseConnection = (connectionId: string) => {
