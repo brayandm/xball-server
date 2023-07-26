@@ -12,3 +12,5 @@ const webSocketManager = new WebSocketManager(
 const gameManager = new GameManager();
 
 const eventManager = new EventManager(gameManager, webSocketManager);
+
+eventManager.start();
