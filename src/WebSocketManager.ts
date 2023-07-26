@@ -72,6 +72,12 @@ class WebSocketManager {
     }
   }
 
+  public broadcastMessage(message: string) {
+    Object.keys(this.connections).forEach((connectionId) => {
+      this.sendMessage(connectionId, message);
+    });
+  }
+
   public setOnMessageCallback(
     callback: (connectionId: string, message: string) => void
   ) {
