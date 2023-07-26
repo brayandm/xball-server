@@ -2,7 +2,7 @@ import WebSocket from "ws";
 import { v4 as uuidv4 } from "uuid";
 
 class WebSocketManager {
-  private webSocket: WebSocket;
+  private webSocket: WebSocket.Server;
   connections: { [key: string]: WebSocket } = {};
   private onMessageCallback: (connectionId: string, message: string) => void;
   private onNewConnectionCallback: (connectionId: string) => void;
@@ -25,7 +25,7 @@ class WebSocketManager {
     onNewConnectionCallback?: (connectionId: string) => void;
     onCloseConnectionCallback?: (connectionId: string) => void;
   }) {
-    this.webSocket = new WebSocket(`ws://localhost:${port}`);
+    this.webSocket = new WebSocket.Server({ port: port });
     this.onMessageCallback = onMessageCallback;
     this.onNewConnectionCallback = onNewConnectionCallback;
     this.onCloseConnectionCallback = onCloseConnectionCallback;
