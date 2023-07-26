@@ -66,7 +66,7 @@ class WebSocketManager {
     console.log(`Server running on port ${port}`);
   }
 
-  public send(connectionId: string, message: string) {
+  public sendMessage(connectionId: string, message: string) {
     if (this.connections[connectionId]) {
       this.connections[connectionId].send(message);
     }
