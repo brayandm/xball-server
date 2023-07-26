@@ -5,15 +5,30 @@ class WebSocketManager {
   private webSocket: WebSocket;
   connections: { [key: string]: WebSocket } = {};
   private onMessageCallback: (connectionId: string, message: string) => void;
+  private onNewConnectionCallback: (connectionId: string) => void;
+  private onCloseConnectionCallback: (connectionId: string) => void;
 
-  constructor(
-    port: number,
-    onMessageCallback: (connectionId: string, message: string) => void = () => {
+  constructor({
+    port,
+    onMessageCallback = () => {
       return;
-    }
-  ) {
+    },
+    onNewConnectionCallback = () => {
+      return;
+    },
+    onCloseConnectionCallback = () => {
+      return;
+    },
+  }: {
+    port: number;
+    onMessageCallback?: (connectionId: string, message: string) => void;
+    onNewConnectionCallback?: (connectionId: string) => void;
+    onCloseConnectionCallback?: (connectionId: string) => void;
+  }) {
     this.webSocket = new WebSocket(`ws://localhost:${port}`);
     this.onMessageCallback = onMessageCallback;
+    this.onNewConnectionCallback = onNewConnectionCallback;
+    this.onCloseConnectionCallback = onCloseConnectionCallback;
 
     this.webSocket.on("connection", (connection) => {
       const connectionId = uuidv4();
@@ -22,13 +37,19 @@ class WebSocketManager {
 
       this.connections[connectionId] = connection;
 
+      this.onNewConnectionCallback(connectionId);
+
       console.log(
         `Total connections open: ` + Object.keys(this.connections).length
       );
 
       connection.on("close", async () => {
         console.log(`Connection closed (ID: ` + connectionId + `)`);
+
         delete this.connections[connectionId];
+
+        this.onCloseConnectionCallback(connectionId);
+
         console.log(
           `Total connections open: ` + Object.keys(this.connections).length
         );
@@ -55,6 +76,16 @@ class WebSocketManager {
     callback: (connectionId: string, message: string) => void
   ) {
     this.onMessageCallback = callback;
+  }
+
+  public setOnNewConnectionCallback(callback: (connectionId: string) => void) {
+    this.onNewConnectionCallback = callback;
+  }
+
+  public setOnCloseConnectionCallback(
+    callback: (connectionId: string) => void
+  ) {
+    this.onCloseConnectionCallback = callback;
   }
 }
 
