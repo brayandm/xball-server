@@ -64,7 +64,7 @@ class EventManager {
     });
   }
 
-  public async start() {
+  public start() {
     const onMessage = (connectionId: string, message: string) => {
       const parsedMessage: updatePlayerEvent = JSON.parse(message);
 
