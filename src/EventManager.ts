@@ -37,16 +37,21 @@ class EventManager {
     const newPlayer = players.find((player) => player.getId() === connectionId);
 
     if (newPlayer) {
-      const message = JSON.stringify({
+      const message = {
         type: "createPlayer",
-        isMe: newPlayer.getId() === connectionId,
+        isMe: false,
         id: newPlayer.getId(),
         x: newPlayer.getX(),
         y: newPlayer.getY(),
-      });
+      };
 
       players.forEach((player) => {
-        this.webSocketManager.sendMessage(player.getId(), message);
+        this.webSocketManager.sendMessage(
+          player.getId(),
+          player.getId() === connectionId
+            ? JSON.stringify({ ...message, isMe: true })
+            : JSON.stringify(message)
+        );
       });
     }
   }
