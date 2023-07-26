@@ -4,14 +4,16 @@ import { v4 as uuidv4 } from "uuid";
 class WebSocketManager {
   private webSocket: WebSocket;
   connections: { [key: string]: WebSocket } = {};
+  private onMessageCallback: (connectionId: string, message: string) => void;
 
   constructor(
     port: number,
-    onMessage: (connectionId: string, message: string) => void = () => {
+    onMessageCallback: (connectionId: string, message: string) => void = () => {
       return;
     }
   ) {
     this.webSocket = new WebSocket(`ws://localhost:${port}`);
+    this.onMessageCallback = onMessageCallback;
 
     this.webSocket.on("connection", (connection) => {
       const connectionId = uuidv4();
@@ -36,7 +38,7 @@ class WebSocketManager {
         console.log(
           `Received message from (ID: ` + connectionId + `): ` + message
         );
-        onMessage(connectionId, message);
+        this.onMessageCallback(connectionId, message);
       });
     });
 
@@ -47,6 +49,12 @@ class WebSocketManager {
     if (this.connections[connectionId]) {
       this.connections[connectionId].send(message);
     }
+  }
+
+  public setOnMessageCallback(
+    callback: (connectionId: string, message: string) => void
+  ) {
+    this.onMessageCallback = callback;
   }
 }
 
