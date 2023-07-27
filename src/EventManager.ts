@@ -5,8 +5,8 @@ type updatePlayerEvent = {
   type: "updatePlayer";
   x: number;
   y: number;
-  aceleracionX: number;
-  aceleracionY: number;
+  accelerationX: number;
+  accelerationY: number;
 };
 
 class EventManager {
@@ -101,8 +101,8 @@ class EventManager {
         connectionId,
         parsedMessage.x,
         parsedMessage.y,
-        parsedMessage.aceleracionX,
-        parsedMessage.aceleracionY
+        parsedMessage.accelerationX,
+        parsedMessage.accelerationY
       );
 
       this.sendPlayerPositions(connectionId);
