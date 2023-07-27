@@ -20,6 +20,8 @@ class EventManager {
     const players = this.gameManager.getPlayers();
 
     players.forEach((player) => {
+      if (player.getId() === connectionId) return;
+
       const message = JSON.stringify({
         type: "updatePlayer",
         id: player.getId(),
