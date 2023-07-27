@@ -5,6 +5,8 @@ type updatePlayerEvent = {
   type: "updatePlayer";
   x: number;
   y: number;
+  aceleracionX: number;
+  aceleracionY: number;
 };
 
 class EventManager {
@@ -45,6 +47,8 @@ class EventManager {
         id: newPlayer.getId(),
         x: newPlayer.getX(),
         y: newPlayer.getY(),
+        accaceleracionX: newPlayer.getAccelerationX(),
+        aceleracionY: newPlayer.getAccelerationY(),
       };
 
       players.forEach((player) => {
@@ -96,7 +100,9 @@ class EventManager {
       this.gameManager.updatePlayer(
         connectionId,
         parsedMessage.x,
-        parsedMessage.y
+        parsedMessage.y,
+        parsedMessage.aceleracionX,
+        parsedMessage.aceleracionY
       );
 
       this.sendPlayerPositions(connectionId);
