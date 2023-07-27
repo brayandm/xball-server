@@ -29,6 +29,8 @@ class EventManager {
         id: player.getId(),
         x: player.getX(),
         y: player.getY(),
+        accaceleracionX: player.getAccelerationX(),
+        aceleracionY: player.getAccelerationY(),
       });
 
       this.webSocketManager.sendMessage(connectionId, message);
@@ -47,8 +49,6 @@ class EventManager {
         id: newPlayer.getId(),
         x: newPlayer.getX(),
         y: newPlayer.getY(),
-        accaceleracionX: newPlayer.getAccelerationX(),
-        aceleracionY: newPlayer.getAccelerationY(),
       };
 
       players.forEach((player) => {
