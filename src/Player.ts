@@ -2,6 +2,8 @@ class Player {
   private id: string;
   private x: number;
   private y: number;
+  private accelerationX: number;
+  private accelerationY: number;
 
   constructor(id: string) {
     this.id = id;
@@ -19,6 +21,19 @@ class Player {
 
   public getY() {
     return this.y;
+  }
+
+  public getAccelerationX() {
+    return this.accelerationX;
+  }
+
+  public getAccelerationY() {
+    return this.accelerationY;
+  }
+
+  public setAcceleration(accelerationX: number, accelerationY: number) {
+    this.accelerationX = accelerationX;
+    this.accelerationY = accelerationY;
   }
 
   public getPosition() {
