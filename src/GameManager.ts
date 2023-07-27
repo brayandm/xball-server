@@ -8,10 +8,17 @@ class GameManager {
     this.players.push(player);
   }
 
-  public updatePlayer(id: string, x: number, y: number) {
+  public updatePlayer(
+    id: string,
+    x: number,
+    y: number,
+    accelerationX: number,
+    accelerationY: number
+  ) {
     const player = this.players.find((player) => player.getId() === id);
     if (player) {
       player.setPosition(x, y);
+      player.setAcceleration(accelerationX, accelerationY);
     }
   }
 
