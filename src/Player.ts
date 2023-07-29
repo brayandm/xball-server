@@ -5,11 +5,13 @@ class Player {
   private accelerationX: number;
   private accelerationY: number;
   private currentKeySet: boolean[];
+  private playerWidth = 70;
+  private playerHeight = 70;
 
   constructor(id: string) {
     this.id = id;
-    this.x = 0;
-    this.y = 0;
+    this.x = this.playerWidth / 2;
+    this.y = this.playerHeight / 2;
     this.currentKeySet = [false, false, false, false];
   }
 
