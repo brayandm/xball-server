@@ -23,7 +23,10 @@ class EventManager {
     this.webSocketManager = webSocketManager;
   }
 
-  private sendPlayerKeySetToAllPlayers(connectionId: string) {
+  private sendPlayerKeySetToAllPlayers(
+    connectionId: string,
+    event: keySetPlayerEvent
+  ) {
     const players = this.gameManager.getPlayers();
 
     players.forEach((player) => {
@@ -31,15 +34,18 @@ class EventManager {
 
       const message = JSON.stringify({
         type: "keySetPlayer",
-        id: player.getId(),
-        keySet: player.getKeySet(),
+        id: connectionId,
+        keySet: event.keySet,
       });
 
       this.webSocketManager.sendMessage(player.getId(), message);
     });
   }
 
-  private sendPlayerPositionToAllPlayers(connectionId: string) {
+  private sendPlayerPositionToAllPlayers(
+    connectionId: string,
+    event: updatePlayerEvent
+  ) {
     const players = this.gameManager.getPlayers();
 
     players.forEach((player) => {
@@ -47,11 +53,11 @@ class EventManager {
 
       const message = JSON.stringify({
         type: "updatePlayer",
-        id: player.getId(),
-        x: player.getX(),
-        y: player.getY(),
-        accelerationX: player.getAccelerationX(),
-        accelerationY: player.getAccelerationY(),
+        id: connectionId,
+        x: event.x,
+        y: event.y,
+        accelerationX: event.accelerationX,
+        accelerationY: event.accelerationY,
       });
 
       this.webSocketManager.sendMessage(player.getId(), message);
@@ -121,7 +127,7 @@ class EventManager {
       if (event.type === "keySetPlayer") {
         this.gameManager.applyPlayerKeySet(connectionId, event.keySet);
 
-        this.sendPlayerKeySetToAllPlayers(connectionId);
+        this.sendPlayerKeySetToAllPlayers(connectionId, event);
       } else if (event.type === "updatePlayer") {
         this.gameManager.updatePlayer(
           connectionId,
@@ -130,7 +136,7 @@ class EventManager {
           event.accelerationX,
           event.accelerationY
         );
-        this.sendPlayerPositionToAllPlayers(connectionId);
+        this.sendPlayerPositionToAllPlayers(connectionId, event);
       }
     };
 
