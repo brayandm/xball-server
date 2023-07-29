@@ -23,7 +23,7 @@ class EventManager {
     this.webSocketManager = webSocketManager;
   }
 
-  private sendPlayerKeySet(connectionId: string) {
+  private sendPlayerKeySetToAllPlayers(connectionId: string) {
     const players = this.gameManager.getPlayers();
 
     players.forEach((player) => {
@@ -35,11 +35,11 @@ class EventManager {
         keySet: player.getKeySet(),
       });
 
-      this.webSocketManager.sendMessage(connectionId, message);
+      this.webSocketManager.sendMessage(player.getId(), message);
     });
   }
 
-  private sendPlayerPosition(connectionId: string) {
+  private sendPlayerPositionToAllPlayers(connectionId: string) {
     const players = this.gameManager.getPlayers();
 
     players.forEach((player) => {
@@ -54,7 +54,7 @@ class EventManager {
         accelerationY: player.getAccelerationY(),
       });
 
-      this.webSocketManager.sendMessage(connectionId, message);
+      this.webSocketManager.sendMessage(player.getId(), message);
     });
   }
 
@@ -121,7 +121,7 @@ class EventManager {
       if (event.type === "keySetPlayer") {
         this.gameManager.applyPlayerKeySet(connectionId, event.keySet);
 
-        this.sendPlayerKeySet(connectionId);
+        this.sendPlayerKeySetToAllPlayers(connectionId);
       } else if (event.type === "updatePlayer") {
         this.gameManager.updatePlayer(
           connectionId,
@@ -130,7 +130,7 @@ class EventManager {
           event.accelerationX,
           event.accelerationY
         );
-        this.sendPlayerPosition(connectionId);
+        this.sendPlayerPositionToAllPlayers(connectionId);
       }
     };
 
