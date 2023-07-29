@@ -9,6 +9,11 @@ type updatePlayerEvent = {
   accelerationY: number;
 };
 
+type keySetPlayerEvent = {
+  type: "keySetPlayer";
+  keySet: boolean[];
+};
+
 class EventManager {
   private gameManager: GameManager;
   private webSocketManager: WebSocketManager;
@@ -95,15 +100,19 @@ class EventManager {
 
   public start() {
     const onMessage = (connectionId: string, message: string) => {
-      const parsedMessage: updatePlayerEvent = JSON.parse(message);
+      const event: updatePlayerEvent | keySetPlayerEvent = JSON.parse(message);
 
-      this.gameManager.updatePlayer(
-        connectionId,
-        parsedMessage.x,
-        parsedMessage.y,
-        parsedMessage.accelerationX,
-        parsedMessage.accelerationY
-      );
+      if (event.type === "keySetPlayer") {
+        this.gameManager.applyPlayerKeySet(connectionId, event.keySet);
+      } else if (event.type === "updatePlayer") {
+        this.gameManager.updatePlayer(
+          connectionId,
+          event.x,
+          event.y,
+          event.accelerationX,
+          event.accelerationY
+        );
+      }
 
       this.sendPlayerPositions(connectionId);
     };

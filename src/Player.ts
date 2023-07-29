@@ -4,11 +4,13 @@ class Player {
   private y: number;
   private accelerationX: number;
   private accelerationY: number;
+  private currentKeySet: boolean[];
 
   constructor(id: string) {
     this.id = id;
     this.x = 0;
     this.y = 0;
+    this.currentKeySet = [false, false, false, false];
   }
 
   public getId() {
@@ -51,6 +53,10 @@ class Player {
   public setPosition(x: number, y: number) {
     this.x = x;
     this.y = y;
+  }
+
+  public applyKeySet(keySet: boolean[]) {
+    this.currentKeySet = keySet;
   }
 }
 

@@ -22,6 +22,13 @@ class GameManager {
     }
   }
 
+  public applyPlayerKeySet(id: string, keySet: boolean[]) {
+    const player = this.players.find((player) => player.getId() === id);
+    if (player) {
+      player.applyKeySet(keySet);
+    }
+  }
+
   public removePlayer(id: string) {
     this.players = this.players.filter((player) => player.getId() !== id);
   }
