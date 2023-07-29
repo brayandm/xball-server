@@ -9,7 +9,10 @@ const webSocketManager = new WebSocketManager({
   port: Number(process.env.WEBSOCKET_PORT || "3001"),
 });
 
-const gameManager = new GameManager();
+const gameManager = new GameManager({
+  width: Number(process.env.MAP_WIDTH),
+  height: Number(process.env.MAP_HEIGHT),
+});
 
 const eventManager = new EventManager(gameManager, webSocketManager);
 
