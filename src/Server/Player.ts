@@ -24,6 +24,8 @@ class Player {
     this.id = id;
     this.x = x;
     this.y = y;
+    this.playerWidth = playerWidth;
+    this.playerHeight = playerHeight;
     this.currentKeySet = [false, false, false, false];
   }
 
