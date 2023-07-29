@@ -55,6 +55,10 @@ class Player {
     this.y = y;
   }
 
+  public getKeySet() {
+    return this.currentKeySet;
+  }
+
   public applyKeySet(keySet: boolean[]) {
     this.currentKeySet = keySet;
   }

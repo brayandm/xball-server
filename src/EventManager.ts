@@ -23,7 +23,23 @@ class EventManager {
     this.webSocketManager = webSocketManager;
   }
 
-  private sendPlayerPositions(connectionId: string) {
+  private sendPlayerKeySet(connectionId: string) {
+    const players = this.gameManager.getPlayers();
+
+    players.forEach((player) => {
+      if (player.getId() === connectionId) return;
+
+      const message = JSON.stringify({
+        type: "keySetPlayer",
+        id: player.getId(),
+        keySet: player.getKeySet(),
+      });
+
+      this.webSocketManager.sendMessage(connectionId, message);
+    });
+  }
+
+  private sendPlayerPosition(connectionId: string) {
     const players = this.gameManager.getPlayers();
 
     players.forEach((player) => {
@@ -104,6 +120,8 @@ class EventManager {
 
       if (event.type === "keySetPlayer") {
         this.gameManager.applyPlayerKeySet(connectionId, event.keySet);
+
+        this.sendPlayerKeySet(connectionId);
       } else if (event.type === "updatePlayer") {
         this.gameManager.updatePlayer(
           connectionId,
@@ -112,9 +130,8 @@ class EventManager {
           event.accelerationX,
           event.accelerationY
         );
+        this.sendPlayerPosition(connectionId);
       }
-
-      this.sendPlayerPositions(connectionId);
     };
 
     const onNewConnection = (connectionId: string) => {
