@@ -10,7 +10,7 @@ services:
       - ${WEBSOCKET_PORT}:${WEBSOCKET_PORT}
     networks:
       - xball
-    command: npx ts-node src/WebSocketServer.ts
+    command: npx ts-node src/Server/WebSocketServer.ts
 
 networks:
   xball:
