@@ -15,8 +15,12 @@ class GameManager {
   public createPlayer(id: string) {
     const player = new Player({
       id: id,
-      x: Math.floor(Math.random() * this.width) + this.playerWidth / 2,
-      y: Math.floor(Math.random() * this.height) + this.playerHeight / 2,
+      x:
+        Math.floor(Math.random() * (this.width - this.playerWidth)) +
+        this.playerWidth / 2,
+      y:
+        Math.floor(Math.random() * (this.height - this.playerHeight)) +
+        this.playerHeight / 2,
       playerWidth: this.playerWidth,
       playerHeight: this.playerHeight,
     });
