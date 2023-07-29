@@ -89,21 +89,21 @@ class WebSocketManager {
     console.log(
       `Bytes total ${this.bytesSent + this.bytesReceived} | Bytes sent: ${
         this.bytesSent
-      } | Bytes received: ${this.bytesReceived}`,
+      } | Bytes received: ${this.bytesReceived}`
     );
     console.log(
       `Kilobytes total ${
         (this.bytesSent + this.bytesReceived) / 1024
       } | Kilobytes sent: ${this.bytesSent / 1024} | Kilobytes received: ${
         this.bytesReceived / 1024
-      }`,
+      }`
     );
     console.log(
       `Megabytes total ${
         (this.bytesSent + this.bytesReceived) / 1024 / 1024
       } | Megabytes sent: ${
         this.bytesSent / 1024 / 1024
-      } | Megabytes received: ${this.bytesReceived / 1024 / 1024}`,
+      } | Megabytes received: ${this.bytesReceived / 1024 / 1024}`
     );
     console.log("\n");
   }
