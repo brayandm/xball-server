@@ -7,9 +7,37 @@ class AiPlayer {
   private accelerationX: number;
   private accelerationY: number;
 
-  public start() {
-    this.webSocketManager = new WebSocketManager({
-      webSocketUrl: `ws://localhost:${process.env.WEBSOCKET_PORT}`,
+  constructor(webSocketManager: WebSocketManager) {
+    this.webSocketManager = webSocketManager;
+    this.x = 0;
+    this.y = 0;
+    this.accelerationX = 0;
+    this.accelerationY = 0;
+  }
+
+  public async start() {
+    this.webSocketManager.setOnOpenConnectionCallback(async () => {
+      console.log("AiPlayer is started.");
+      const running = true;
+      while (running) {
+        const keySet = [
+          Math.random() >= 0.5,
+          Math.random() >= 0.5,
+          Math.random() >= 0.5,
+          Math.random() >= 0.5,
+        ];
+        this.webSocketManager.sendMessage(
+          JSON.stringify({
+            type: "keySetPlayer",
+            keySet: keySet,
+          })
+        );
+        await new Promise((resolve) =>
+          setTimeout(() => {
+            resolve(null);
+          }, Math.random() * 5000)
+        );
+      }
     });
   }
 }
