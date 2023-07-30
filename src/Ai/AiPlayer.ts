@@ -6,6 +6,7 @@ class AiPlayer {
   private y: number;
   private accelerationX: number;
   private accelerationY: number;
+  private currentKeySet: boolean[];
 
   constructor(webSocketManager: WebSocketManager) {
     this.webSocketManager = webSocketManager;
@@ -26,6 +27,9 @@ class AiPlayer {
           Math.random() >= 0.5,
           Math.random() >= 0.5,
         ];
+
+        this.currentKeySet = keySet;
+
         this.webSocketManager.sendMessage(
           JSON.stringify({
             type: "keySetPlayer",
